@@ -2,25 +2,59 @@ import socket
 import threading
 
 PORT = 4545
+HOST = socket.gethostbyname(socket.gethostname())
 
 Disconnect_msg = "!DISCONNECT"
-#Server = "10.1.55.12"
-SERVER = socket.gethostbyname(socket.gethostname())
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect((SERVER, PORT))
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+ADDR = (HOST, PORT)
+server.bind(ADDR)
+server.listen(1)
+
+conns = []
+
+def handle_client(conn, addr):
+    try:
+        print(f"{addr} connected to server!")
+        connected = True
+        if connected:
+            conn.send(bytes("Write your name:", "utf-8"))
+            name = conn.recv(360).decode('utf-8')
+            conns.append(conn)
+            for c in conns:
+                if c == conn:
+                    c.send(bytes(name + " joined to the server!", "utf-8"))
+
+        while connected:
+            msg = conn.recv(360).decode('utf-8')
+            if msg:
+                if msg == Disconnect_msg:
+                    conns.remove(conn)
+                    connected= False
+                else:
+                    for c in conns:
+                        if c == conn:
+                            c.send(bytes('YOU (' + name + '): ' + msg, "utf-8"))
+                        else:
+                            c.send(bytes(name + ': ' + msg, "utf-8"))
+
+        conn.close()
+        print(f"{ADDR} is diconnected")
+    except:
+        conns.remove(conn)
 
 
-def send_msg():
-    msg = input()
-    message = msg.encode('utf-8')
-    client.send(message)
 
-def recieveMsg():
-    print("\n", client.recv(1024).decode())
+def start():
+    server.listen()
+    print("Server is running...")
+    while True:
+        conn, ADDR = server.accept()
+        thread = threading.Thread(target=handle_client, args=(conn, ADDR))
+        thread.start()
 
-while True:
-    recieveThread = threading.Thread(target=recieveMsg, args=())
-    sendThread = threading.Thread(target=send_msg, args=())
-    recieveThread.start()
-    sendThread.start()
+
+print("Server is starting...")
+
+start()
