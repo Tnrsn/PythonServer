@@ -4,8 +4,6 @@ import threading
 PORT = 4545
 HOST = socket.gethostbyname(socket.gethostname())
 
-Disconnect_msg = "!DISCONNECT"
-
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 ADDR = (HOST, PORT)
@@ -23,25 +21,22 @@ def handle_client(conn, addr):
             name = conn.recv(360).decode('utf-8')
             conns.append(conn)
             for c in conns:
-                if c == conn:
-                    c.send(bytes(name + " joined to the server!", "utf-8"))
+                c.send(bytes(name + " joined to the server!", "utf-8"))
 
         while connected:
             msg = conn.recv(360).decode('utf-8')
             if msg:
-                if msg == Disconnect_msg:
-                    conns.remove(conn)
-                    connected= False
-                else:
-                    for c in conns:
-                        if c == conn:
-                            c.send(bytes('YOU (' + name + '): ' + msg, "utf-8"))
-                        else:
-                            c.send(bytes(name + ': ' + msg, "utf-8"))
-
-        conn.close()
-        print(f"{ADDR} is diconnected")
+                for c in conns:
+                    if c == conn:
+                        c.send(bytes('YOU (' + name + '): ' + msg, "utf-8"))
+                    else:
+                        c.send(bytes(name + ': ' + msg, "utf-8"))
     except:
+        for c in conns:
+            if c != conn:
+                c.send(bytes(f"{name} disconnected!", "utf-8"))
+        conn.close()
+        print(f"{addr} disconnected!")
         conns.remove(conn)
 
 
