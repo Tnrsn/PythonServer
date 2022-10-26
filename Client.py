@@ -17,7 +17,7 @@ def send_msg():
     client.send(message)
 
 def recieveMsg():
-    print("\n", client.recv(1024).decode())
+    print(client.recv(1024).decode())
 
 while True:
     recieveThread = threading.Thread(target=recieveMsg, args=())
