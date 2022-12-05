@@ -12,6 +12,7 @@ server.listen(1)
 
 conns = []
 
+
 def handle_client(conn, addr):
     try:
         print(f"{addr} connected to server!")
@@ -25,12 +26,17 @@ def handle_client(conn, addr):
 
         while connected:
             msg = conn.recv(360).decode('utf-8')
+
             if msg:
-                for c in conns:
-                    if c == conn:
-                        c.send(bytes('YOU (' + name + '): ' + msg, "utf-8"))
-                    else:
-                        c.send(bytes(name + ': ' + msg, "utf-8"))
+                if len(msg) < 80:
+                    for c in conns:
+                        if c == conn:
+                            c.send(bytes('YOU (' + name + '): ' + msg, "utf-8"))
+                        else:
+                            c.send(bytes(name + ': ' + msg, "utf-8"))
+                else:
+                    conn.send(bytes("Message limit exceeded! Letter limit is 80", "utf-8"))
+                
     except:
         for c in conns:
             if c != conn:
