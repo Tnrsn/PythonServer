@@ -28,8 +28,10 @@ def handle_client(conn, addr):
             msg = conn.recv(360).decode('utf-8')
             if msg:
                 if msg[0] == '/':
-                    if msg[1:11] == 'setname':
-                        name = msg[12:]
+
+                    print(msg[1:8])
+                    if msg[1:8] == 'setname':
+                        name = msg[9:]
                         conns[conns.index(conn)] = conn
                     elif msg[1: 6] == 'clear':
                         conn.send(bytes("exec subprocess.run('cls', shell=True)", "utf-8"))
