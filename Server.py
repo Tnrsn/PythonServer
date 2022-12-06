@@ -28,8 +28,6 @@ def handle_client(conn, addr):
             msg = conn.recv(360).decode('utf-8')
             if msg:
                 if msg[0] == '/':
-
-                    print(msg[1:8])
                     if msg[1:8] == 'setname':
                         name = msg[9:]
                         conns[conns.index(conn)] = conn
