@@ -33,6 +33,8 @@ def handle_client(conn, addr):
                         conns[conns.index(conn)] = conn
                     elif msg[1: 6] == 'clear':
                         conn.send(bytes("exec subprocess.run('cls', shell=True)", "utf-8"))
+                    elif msg[1: 9] == 'commands':
+                        conn.send(bytes("-SERVER- Commands:\n1:  setname\n2:  clear", "utf-8"))
                     else:
                         conn.send(bytes("-SERVER- (Invalid Command)", "utf-8"))
 
