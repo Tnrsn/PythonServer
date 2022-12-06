@@ -26,9 +26,17 @@ def handle_client(conn, addr):
 
         while connected:
             msg = conn.recv(360).decode('utf-8')
-
             if msg:
-                if len(msg) < 80:
+                if msg[0] == '/':
+                    if msg[1:11] == 'setname':
+                        name = msg[12:]
+                        conns[conns.index(conn)] = conn
+                    elif msg[1: 6] == 'clear':
+                        conn.send(bytes("exec subprocess.run('cls', shell=True)", "utf-8"))
+                    else:
+                        conn.send(bytes("-SERVER- (Invalid Command)", "utf-8"))
+
+                elif len(msg) < 80:
                     for c in conns:
                         if c == conn:
                             c.send(bytes('YOU (' + name + '): ' + msg, "utf-8"))
@@ -36,7 +44,8 @@ def handle_client(conn, addr):
                             c.send(bytes(name + ': ' + msg, "utf-8"))
                 else:
                     conn.send(bytes("Message limit exceeded! Letter limit is 80", "utf-8"))
-                
+            
+
     except:
         for c in conns:
             if c != conn:
