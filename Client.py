@@ -10,7 +10,7 @@ root = tk.Tk()
 entry = tk.Entry()
 entry.pack()
 
-listbox = tk.Listbox(root)
+listbox = tk.Listbox(root, width=100, height=50)
 listbox.pack()
 
 PORT = 4545
@@ -21,12 +21,14 @@ SERVER = "10.1.56.53"
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((SERVER, PORT))
 
-def send_msg():
+def send_msg(event = None):
     # msg = input()
+    print(entry.get())
     msg = entry.get()
     message = msg.encode('utf-8')
     client.send(message)
 
+entry.bind("<Return>", send_msg)
 
 def recieveMsg():
     while(True):
