@@ -40,7 +40,7 @@ def recieveMsg():
                 # print(recievedMsg)
 
         except:
-            print("Disconnected from the server!")
+            listbox.insert(tk.END, "Disconnected from the server!")
 
 button = tk.Button(text="Submit", command=send_msg)
 button.pack()
