@@ -1,23 +1,17 @@
 import socket
 import threading
-
 # set up the port and host
 PORT = 4545
 HOST = socket.gethostbyname(socket.gethostname())
-
 # create a socket object
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 # bind the socket object to the specified address
 ADDR = (HOST, PORT)
 server.bind(ADDR)
-
 # listen for incoming connections on the specified port
 server.listen(1)
-
 # list to hold all connected clients
 conns = []
-
 # function to handle each client
 def handle_client(conn, addr):
     try:
@@ -35,7 +29,6 @@ def handle_client(conn, addr):
             # send message to all connected clients that a new client has joined
             for c in conns:
                 c.send(bytes(name + " joined to the server!", "utf-8"))
-
         # loop to handle client messages
         while connected:
             # receive message from client and decode it
@@ -54,7 +47,6 @@ def handle_client(conn, addr):
                     # otherwise, send invalid command message to client
                     else:
                         conn.send(bytes("-SERVER- (Invalid Command)", "utf-8"))
-
                 # if message is not a command and is less than 80 characters, send to all clients
                 elif len(msg) < 80:
                     for c in conns:
@@ -74,7 +66,6 @@ def handle_client(conn, addr):
         # indicate that the client has disconnected
         print(f"{addr} disconnected!")
         conns.remove(conn)
-
 # function to start the server and listen for incoming connections
 def start():
     # start listening for incoming connections
@@ -87,8 +78,6 @@ def start():
         conn, ADDR = server.accept()
         thread = threading.Thread(target=handle_client, args=(conn, ADDR))
         thread.start()
-
 print("Server is starting...")
-
 #initilaizes the server
 start()
