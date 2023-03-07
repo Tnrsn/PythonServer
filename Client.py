@@ -15,7 +15,7 @@ listbox.pack()
 
 PORT = 4545
 
-SERVER = "10.1.55.12"
+SERVER = "26.40.110.128"
 #SERVER = socket.gethostbyname(socket.gethostname())
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
