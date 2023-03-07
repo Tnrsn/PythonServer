@@ -70,5 +70,3 @@ def start():
 print("Server is starting...")
 
 start()
-
-#deneme
