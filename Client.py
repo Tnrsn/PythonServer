@@ -4,7 +4,7 @@ import tkinter as tk
 
 root = tk.Tk()
 root.title("TApp")
-root.geometry('800x600')
+root.geometry('600x500')
 root.configure(bg='#212121')
 
 # Create a Tkinter Listbox widget to display received messages
