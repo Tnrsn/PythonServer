@@ -16,7 +16,8 @@ entry = tk.Entry(root, bg='#424242', fg='white', borderwidth=0, font=("default",
 entry.pack(side=tk.LEFT, padx=(20, 0), pady=(3, 10), fill=tk.BOTH, expand=True)
 
 PORT = 4545 # Listening port
-SERVER = socket.gethostbyname(socket.gethostname()) # Get the IP address of the local machine for debugging
+# SERVER = socket.gethostbyname(socket.gethostname()) # Get the IP address of the local machine for debugging
+SERVER = '26.40.110.128' 
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Create a socket object for the client
 client.connect((SERVER, PORT)) # Connect the client socket to the server socket
@@ -51,11 +52,11 @@ entry.bind("<Return>", send_msg)
 
 # Create a Tkinter Button widget to send messages
 button = tk.Button(root, text="Submit", command=send_msg, bg='#00BFFF', fg='white', borderwidth=0, padx=1, pady=1, font=("default", 12))
-button.pack(side=tk.LEFT, padx=(0, 20), pady=(3, 10), fill=tk.BOTH, expand=True)
+button.pack(side=tk.LEFT, padx=0, pady=(3, 10), fill=tk.BOTH, expand=True)
 
 # Create a Tkinter Button widget to clear messages
-# reset = tk.Button(root, text="Clear", command=clear_msg, bg='#F44336', fg='white', borderwidth=0, font=("default", 12))
-# reset.pack(side=tk.LEFT, padx=20, pady=(0, 20), fill=tk.BOTH)
+reset = tk.Button(root, text="Clear", command=clear_msg, bg='#F44336', fg='white', borderwidth=0, padx=1, pady=1, font=("default", 12))
+reset.pack(side=tk.LEFT, padx=(0,20), pady=(3, 10), fill=tk.BOTH, expand=True)
 
 # Start a new thread to receive messages from the server
 receive_thread = threading.Thread(target=receive_msg)
