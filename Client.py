@@ -40,6 +40,8 @@ def receive_msg():
             received_msg = client.recv(1024).decode()
             # Add the message to the messageBox widget
             messageBox.insert(tk.END, received_msg)
+            #Scroll down to new message
+            messageBox.see(tk.END)
         except:
             # If an exception occurs, display an error message in the messageBox widget
             messageBox.insert(tk.END, "Disconnected from the server!")
