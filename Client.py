@@ -2,20 +2,21 @@ import socket
 import threading
 import tkinter as tk
 
-root = tk.Tk()
-root.title("TApp")
-root.geometry('400x300') # determine the weight and height of the window
-root.configure(bg='#212121') # determine the background color of the window
+root = tk.Tk() # create window object
+root.title("TApp") # determine the title of the window
+root.geometry('600x400') # determine the weight and height of the window
+root.configure(bg = '#212121') # determine the background color of the window
 
 # create a Tkinter messageBox widget to display received messages 
-messageBox = tk.Listbox(root, width=60, height=10, bg='#303030', fg='white', borderwidth=0) 
-messageBox.pack(padx=10, pady=10, fill=tk.BOTH, expand=True) # add the messageBox widget to the window
+messageBox = tk.Listbox(root, width = 60, height = 10, bg = '#303030', fg = 'white', borderwidth = 0) 
+messageBox.pack(padx = 10, pady = 10, fill = tk.BOTH, expand = True) # add the messageBox widget to the window
 
-entry = tk.Entry(root, bg='#303030', fg='white', borderwidth=0)
-entry.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True) # add the Entry widget to the window
+# create a Tkinter entry widget
+entry = tk.Entry(root, bg = '#303030', fg = 'white', borderwidth = 0, font = ("default", 20))
+entry.pack(side = tk.LEFT, padx = 10, pady = 10, fill = tk.BOTH, expand = True) # add the Entry widget to the window
 
-PORT = 4545
-# SERVER = "1.1.1.1."
+PORT = 4545 # listening port
+
 SERVER = socket.gethostbyname(socket.gethostname()) # get the IP address of the local machine for debugging
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create a socket object for the client
@@ -27,8 +28,8 @@ def send_msg(event=None):
     message = msg.encode('utf-8') # convert the message to bytes
     client.send(message) # send the message to the server
 
-def clear_msg(event=None):
-    messageBox.delete(0, 'end') #Clears messagebox
+def clear_msg(event = None):
+    messageBox.delete(0, 'end') # clear the messagebox
 
 def receive_msg():
     while True:
@@ -43,14 +44,14 @@ def receive_msg():
 
 # #SUBMIT BUTTON
 entry.bind("<Return>", send_msg) # bind the "Return" (aka "Enter") key to the send_msg function
-button = tk.Button(root, text="Submit", command=send_msg, bg='#4CAF50', fg='white', borderwidth=0) # create a Tkinter Button widget to send the message
-button.pack(side=tk.LEFT, padx=0, pady=0, fill=tk.BOTH, expand=True) # add the Button widget to the window
+button = tk.Button(root, text = "Submit", command = send_msg, bg = '#4CAF50', fg = 'white', borderwidth = 0) # create a Tkinter Button widget to send the message
+button.pack(side = tk.LEFT, padx = 0, pady = 0, fill = tk.BOTH, expand = True) # add the Button widget to the window
 
 # #CLEAR BUTTON
-reset = tk.Button(root, text="Clear", command=clear_msg, bg='#f44336', fg='white', borderwidth=0)
-reset.pack(side=tk.LEFT, padx=0, pady=0, fill=tk.BOTH, expand=True)
+reset = tk.Button(root, text = "Clear", command = clear_msg, bg = '#f44336', fg = 'white', borderwidth = 0) # create a Tkinter Button widget to clear the message
+reset.pack(side = tk.LEFT, padx = 0, pady = 0, fill = tk.BOTH, expand = True) # add the Button widget to the window
 
-receive_thread = threading.Thread(target=receive_msg, args=()) # create a thread for receiving messages
-receive_thread.start()
+receive_thread = threading.Thread(target = receive_msg, args = ()) # create a thread for receiving messages
+receive_thread.start() # start the thread
 
 root.mainloop()
