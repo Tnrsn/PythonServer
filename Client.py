@@ -55,7 +55,6 @@ def backup_msg():
     file_name = "backup-" + today + time.strftime("-%H-%M-%S") + ".txt" # Create a file name according to the now time
     file = open(file_name, "w") # Create a file
     for item in range(1, count()):
-        if messageBox.get(item) != "Enter a real name with the /setname command!":
             file.write(messageBox.get(item) + "\n") # Backup the message
     file.close() # Close the file
 

@@ -68,7 +68,6 @@ def handle_client(conn, addr):
                     elif msg[1:9] == 'commands':
                         conn.send(bytes("-SERVER- Commands:", "utf-8"))
                         conn.send(bytes("1: setname", "utf-8"))
-                        conn.send(bytes("2: power", "utf-8"))
                     # Otherwise, send invalid command message to client
                     else:
                         conn.send(bytes("-SERVER- (Invalid Command)", "utf-8"))
