@@ -55,6 +55,7 @@ def handle_client(conn, addr):
                 if msg[0] == '/':
                     # If command is 'setname', change the client's name
                     if msg[1:8] == 'setname':
+                        tempname = name
                         name = msg[9:]
                         # If name is not null write new name
                         if name_control(name):
@@ -63,6 +64,7 @@ def handle_client(conn, addr):
                             conn.send(bytes('Your new name is ' + name + '', "utf-8"))
                         # If name is null write error message
                         else:
+                            name = tempname
                             conn.send(bytes("Enter a real name with the /setname command!", "utf-8"))
                     # If command is 'commands', list available commands
                     elif msg[1:9] == 'commands':
@@ -72,7 +74,7 @@ def handle_client(conn, addr):
                     else:
                         conn.send(bytes("-SERVER- (Invalid Command)", "utf-8"))
                 # If message is not a command and is less than 80 characters, send to all clients
-                elif len(msg) < 80:
+                elif len(msg) < 250:
                     # If name is not null write message
                     if name_control(name):
                         for c in conns:
