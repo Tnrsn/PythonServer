@@ -108,6 +108,6 @@ def start():
         thread = threading.Thread(target=handle_client, args=(conn, ADDR))
         thread.start()
 
-print("Server is starting...")
 #Initilaizes the server
+print("Server is starting...")
 start()
