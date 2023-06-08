@@ -55,15 +55,17 @@ def handle_client(conn, addr):
                 if msg[0] == '/':
                     # If command is 'setname', change the client's name
                     if msg[1:8] == 'setname':
+                        tempname = name
                         name = msg[9:]
                         # If name is not null write new name
                         if name_control(name):
                             # Update client's connection in list of connections
                             conns[conns.index(conn)] = conn
-                            conn.send(bytes('Your new name is ' + name + '', "utf-8"))
+                            conn.send(bytes('-SERVER- Your new name is ' + name + '', "utf-8"))
                         # If name is null write error message
                         else:
-                            conn.send(bytes("Enter a real name with the /setname command!", "utf-8"))
+                            name = tempname
+                            conn.send(bytes("-SERVER- An error has occurred due to an empty username being entered. Please enter a valid username using the /setname command.", "utf-8"))
                     # If command is 'commands', list available commands
                     elif msg[1:9] == 'commands':
                         conn.send(bytes("-SERVER- Commands:", "utf-8"))
@@ -72,7 +74,7 @@ def handle_client(conn, addr):
                     else:
                         conn.send(bytes("-SERVER- (Invalid Command)", "utf-8"))
                 # If message is not a command and is less than 80 characters, send to all clients
-                elif len(msg) < 80:
+                elif len(msg) < 250:
                     # If name is not null write message
                     if name_control(name):
                         for c in conns:
@@ -82,7 +84,7 @@ def handle_client(conn, addr):
                                 c.send(bytes(name + ': ' + msg, "utf-8"))
                 # If message is longer than 80 characters, send message limit exceeded message to client
                 else:
-                    conn.send(bytes("Message limit exceeded! Letter limit is 80", "utf-8"))
+                    conn.send(bytes("-SERVER- Message limit exceeded! Letter limit is 250", "utf-8"))
     except:
         # If an error occurs, send disconnect message to other clients and remove client's connection from list
         for c in conns:
@@ -106,6 +108,6 @@ def start():
         thread = threading.Thread(target=handle_client, args=(conn, ADDR))
         thread.start()
 
-print("Server is starting...")
 #Initilaizes the server
+print("Server is starting...")
 start()
