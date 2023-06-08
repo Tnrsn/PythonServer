@@ -4,7 +4,6 @@ import customtkinter
 import tkinter as tk
 import datetime
 import time
-from tkinter import *
 
 root = tk.Tk() # Create a Tkinter form object
 root.title("TCP - IP Chat App") # Determine the title of the Tkinter form object
@@ -20,8 +19,9 @@ entry = customtkinter.CTkEntry(master=root,width=500,corner_radius=8)
 entry.pack(side=tk.LEFT, padx=(20, 0), pady=(10, 10), fill=tk.BOTH, expand=True)
 
 PORT = 4545 # Listening port
-# SERVER = socket.gethostbyname(socket.gethostname()) # Get the IP address of the local machine for debugging
-SERVER = '26.40.110.128' # Get the IP address of the your server machine
+
+SERVER = socket.gethostbyname(socket.gethostname()) # Get the IP address of the local machine for debugging
+#SERVER = '26.40.110.128' # Get the IP address of the your server machine
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Create a socket object for the client
 client.connect((SERVER, PORT)) # Connect the client socket to the server socket
